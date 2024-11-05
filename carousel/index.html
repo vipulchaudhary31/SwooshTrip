@@ -3,29 +3,23 @@
 <head>
   <style>
     * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+      box-sizing: border-box; /* Ensure padding and borders are included in the element's total width and height */
     }
 
-    .carousel-container {
-      width: 100%;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
+    body {
+      margin: 0; /* Remove default body margin */
+      padding: 0; /* Remove default body padding */
     }
 
     .carousel {
       position: relative;
       width: 100%;
-      aspect-ratio: 16/9;  /* Maintains a consistent aspect ratio */
-      overflow: hidden;
+      overflow: hidden; /* Prevent content overflow */
     }
 
     .carousel-inner {
       position: relative;
       width: 100%;
-      height: 100%;
     }
 
     .carousel-slide {
@@ -33,19 +27,19 @@
       top: 0;
       left: 0;
       width: 100%;
-      height: 100%;
       opacity: 0;
-      transition: opacity 0.4s ease-in-out;
+      transition: opacity 0.5s ease-in-out;
+      height: auto; /* Allow height to adjust based on content */
     }
 
     .carousel-slide.active {
+      position: relative; /* This is the key change */
       opacity: 1;
     }
 
     .carousel-slide img {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
+      height: auto;
       display: block;
     }
 
@@ -57,7 +51,6 @@
       display: flex;
       justify-content: space-between;
       pointer-events: none;
-      z-index: 10;
     }
 
     .carousel-button {
@@ -70,66 +63,66 @@
       pointer-events: auto;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       margin: 0 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .carousel-dots {
       display: flex;
       justify-content: center;
       gap: 8px;
-      padding: 16px 0;
-      width: 100%;
+      margin-top: 16px;
     }
 
     .dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: rgba(0, 0, 0, 0.2);
+      background: #ccc;
       cursor: pointer;
       border: none;
       padding: 0;
-      transition: background-color 0.3s ease;
     }
 
     .dot.active {
-      background: rgba(0, 0, 0, 0.8);
+      background: #000;
     }
 
-    @media (max-width: 640px) {
-      .carousel-button {
-        width: 32px;
-        height: 32px;
-        margin: 0 10px;
+    /* Mobile Styles */
+    @media (max-width: 768px) {
+      .carousel {
+        overflow: hidden; /* Prevent extra space below */
       }
 
-      .carousel-dots {
-        padding: 12px 0;
+      .carousel-slide {
+        height: 100%; /* Ensure slides take full height */
+      }
+
+      .carousel-nav {
+        top: 50%; /* Keep navigation centered */
+      }
+
+      .carousel-button {
+        margin: 0 10px; /* Adjust button margins for smaller screens */
       }
     }
   </style>
 </head>
 <body>
-  <div class="carousel-container">
-    <div class="carousel">
-      <div class="carousel-inner">
-        <div class="carousel-slide active">
-          <img src="image1.png" alt="Design 1">
-        </div>
-        <div class="carousel-slide">
-          <img src="image2.png" alt="Design 2">
-        </div>
-        <div class="carousel-slide">
-          <img src="image3.png" alt="Design 3">
-        </div>
+  <div class="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-slide active">
+        <img src="image1.png" alt="Design 1">
       </div>
-      
-      <div class="carousel-nav">
-        <button class="carousel-button prev">←</button>
-        <button class="carousel-button next">→</button>
+      <div class="carousel-slide">
+        <img src="image2.png" alt="Design 2">
       </div>
+      <div class="carousel-slide">
+        <img src="image3.png" alt="Design 3">
+      </div>
+    </div>
+    
+    <div class="carousel-nav">
+      <button class="carousel-button prev">←</button>
+      <button class="carousel-button next">→</button>
     </div>
     
     <div class="carousel-dots">
@@ -145,13 +138,16 @@
     const prevButton = document.querySelector('.prev');
     const nextButton = document.querySelector('.next');
     let currentSlide = 0;
-    let autoPlayInterval;
 
     function showSlide(index) {
-      slides.forEach(slide => slide.classList.remove('active'));
+      slides.forEach(slide => {
+        slide.classList.remove('active');
+        slide.style.position = 'absolute';
+      });
       dots.forEach(dot => dot.classList.remove('active'));
       
       slides[index].classList.add('active');
+      slides[index].style.position = 'relative';
       dots[index].classList.add('active');
     }
 
@@ -165,37 +161,14 @@
       showSlide(currentSlide);
     }
 
-    // Setup event listeners
-    prevButton.addEventListener('click', () => {
-      prevSlide();
-      resetAutoPlay();
-    });
-
-    nextButton.addEventListener('click', () => {
-      nextSlide();
-      resetAutoPlay();
-    });
-
+    prevButton.addEventListener('click', prevSlide);
+    nextButton.addEventListener('click', nextSlide);
     dots.forEach((dot, index) => {
       dot.addEventListener('click', () => {
         currentSlide = index;
         showSlide(currentSlide);
-        resetAutoPlay();
       });
     });
-
-    // Auto play functionality
-    function startAutoPlay() {
-      autoPlayInterval = setInterval(nextSlide, 5000); // Change slide every 5 seconds
-    }
-
-    function resetAutoPlay() {
-      clearInterval(autoPlayInterval);
-      startAutoPlay();
-    }
-
-    // Start auto play
-    startAutoPlay();
   </script>
 </body>
 </html>
