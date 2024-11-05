@@ -1,25 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    html, body {
-      height: fit-content;
-      overflow: hidden;
-    }
-
-    body {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
     .carousel {
       position: relative;
       width: 100%;
@@ -29,7 +11,6 @@
       position: relative;
       overflow: hidden;
       width: 100%;
-      line-height: 0;
     }
 
     .carousel-slide {
@@ -39,11 +20,10 @@
       width: 100%;
       opacity: 0;
       transition: opacity 0.5s ease-in-out;
-      line-height: 0;
     }
 
     .carousel-slide.active {
-      position: relative;
+      position: relative;  /* This is the key change */
       opacity: 1;
     }
 
@@ -73,17 +53,13 @@
       pointer-events: auto;
       box-shadow: 0 2px 6px rgba(0,0,0,0.1);
       margin: 0 20px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
     }
 
     .carousel-dots {
       display: flex;
       justify-content: center;
       gap: 8px;
-      padding: 12px 0;
-      line-height: 0;
+      margin-top: 16px;
     }
 
     .dot {
@@ -98,18 +74,6 @@
 
     .dot.active {
       background: #000;
-    }
-
-    @media (max-width: 768px) {
-      .carousel-button {
-        width: 32px;
-        height: 32px;
-        margin: 0 10px;
-      }
-      
-      .carousel-dots {
-        padding: 8px 0;
-      }
     }
   </style>
 </head>
